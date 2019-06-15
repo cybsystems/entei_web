@@ -479,7 +479,7 @@
         _('add_student').style.display = 'none';
         _('upload_video').style.display = 'block';
         
-        $.post('getVideos.php', {}, function (res, err) {
+        $.post('http://bhoomi.pe.hu/entei/getVideos.php', {}, function (res, err) {
              videos = JSON.parse(res).videos;
             _('data_panel').innerHTML = "";
              videos.forEach(function (video, i) {

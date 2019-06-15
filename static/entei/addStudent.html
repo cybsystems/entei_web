@@ -118,7 +118,7 @@
 
             if(upass==ucpass)
             {            
-            $.post('addStudent.php',{sname:sname,uname:uname,upass:upass},function(res,err){
+            $.post('http://bhoomi.pe.hu/entei/addStudent.php',{sname:sname,uname:uname,upass:upass},function(res,err){
                 
                 if(res.trim()=='Y')
                 {
