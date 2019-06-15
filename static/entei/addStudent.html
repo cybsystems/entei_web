@@ -72,12 +72,12 @@
         {
             let id=getUrlVars()["id"];
             let sql='select * from invitations where id='+id ;
-            $.post('query.php',{sql:sql},function(res,err){
+            $.post('http://bhoomi.pe.hu/entei/query.php',{sql:sql},function(res,err){
                 let invitations=JSON.parse(res).res;
                 if(invitations.length==0)
                 {
                     alert('link got expired');
-                    window.close();
+                    window.location.href='https://www.google.com';
                 }            
             });
             
@@ -96,7 +96,7 @@
             
             let sql='delete  from invitations where id='+id ;
             
-            $.post('query.php',{sql:sql,op:'REMOVE'},function(res,err){
+            $.post('http://bhoomi.pe.hu/entei/query.php',{sql:sql,op:'REMOVE'},function(res,err){
                 
                 
                 if(res.trim()=="Y")
