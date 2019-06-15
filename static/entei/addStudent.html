@@ -56,7 +56,8 @@
     </div>
     
     
-    
+    <script src='./utils.js'></script>
+     
     <script>
         
         function getUrlVars() {
@@ -76,8 +77,8 @@
                 let invitations=JSON.parse(res).res;
                 if(invitations.length==0)
                 {
-                    alert('link got expired');
-                    window.location.href='https://www.google.com';
+                    // alert('link got expired');
+                    // window.location.href='https://www.google.com';
                 }            
             });
             
@@ -102,20 +103,25 @@
                 if(res.trim()=="Y")
                 {
                     alert('Registered Successfully');
-                    window.close();
+                    window.location.href='https://www.google.com';
                     
                 }
                 
             });
         }
         
-        function onSave()
+      async  function onSave()
         {
             let sname=_('sname').value;
             let uname=_('uname').value;
             let upass=_('upass').value;
             let ucpass=_('ucpass').value;
-
+            let isStudentPresent=await isPresent('users','users_uname',uname);
+            if(isStudentPresent)
+            {
+                alert('Username Already Taken');
+                return;
+            }
             if(upass==ucpass)
             {            
             $.post('http://bhoomi.pe.hu/entei/addStudent.php',{sname:sname,uname:uname,upass:upass},function(res,err){
@@ -125,17 +131,18 @@
                     _('sname').value='';
                     _('uname').value='';
                     _('upass').value='';
-                    removeInvitation();
+                    _('ucpass').value='';
                     
-                }
+                    removeInvitation();
+                 }
                 else
                 alert('something went wrong');
              });
             }
             else
                 alert('Password not Matched');
-            }
-        
+             }
+             
     </script>
     
 </body>
