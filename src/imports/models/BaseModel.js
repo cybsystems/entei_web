@@ -6,8 +6,6 @@ export default class BaseModel {
 
     }
     save = () => {
-         
         store.dispatch({ type: 'ADD', model: this.props.key, resource:  this.props.resources })
-
     }
 }
