@@ -2,25 +2,30 @@
    
 include('db.php');
 $sql=$_POST['sql'];
- $op=0;
+$op=1;
 if(isset($_POST['op']))
         {
-    $op=$_POST['op'];
-     
-    $res=mysqli_query($con,$sql);
+     $res=mysqli_query($con,$sql);
      
     if($res)
-    echo 'Y';
+        {
+    $op=0;        
+    if(isset($_POST['get_sql']))
+                {
+                $op=1;
+                $sql=$_POST['get_sql'];
+                }    
+        }    
     else
     echo "N";
-    return;
-
+ 
         }
-        
+       
+       if($op==1)
+       {
 $res=mysqli_query($con,$sql);
 
-if($op==0)
-{
+ 
 $arr=array();
 while(($row=mysqli_fetch_assoc($res)) )
     {
@@ -28,8 +33,8 @@ while(($row=mysqli_fetch_assoc($res)) )
     }
     
 echo json_encode(array('res'=>$arr));
-}
 
+}
 
 
 ?>
