@@ -49,23 +49,30 @@ const DialogActions = withStyles(theme => ({
     },
 }))(MuiDialogActions);
 
-const VideoDialog = ({ open, onDialogClose }) => {
+const VideoDialog = ({ video, open, onDialogClose }) => {
 
+    const url = video ? `http://bhoomi.pe.hu/entei/${video.videos_url}` : ''
 
+    return (
+        <div>{video ?
+            <Dialog maxWidth='xl' onClose={onDialogClose} open={open} >
+                <DialogTitle    id="customized-dialog-title" onClose={onDialogClose}>
+                    {video.videos_title}
+                 </DialogTitle>
+                <DialogContent    dividers>
+                    <video width="800" controls>
+                        <source src={url} type="video/mp4" />
 
-    return (<div>
-        <Dialog onClose={onDialogClose} aria-labelledby="customized-dialog-title" open={open}>
-            <DialogTitle id="customized-dialog-title" onClose={onDialogClose}>
-                Modal title
-            </DialogTitle>
-            <DialogContent dividers></DialogContent>
-            <DialogActions>
-                <Button onClick={onDialogClose} color="secondary">
-                    Close
+                    </video>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={onDialogClose} color="secondary">
+                        Close
                 </Button>
-            </DialogActions>
-        </Dialog>
-    </div>)
+                </DialogActions>
+            </Dialog> : ''}
+        </div>)
 }
 
 export default VideoDialog;

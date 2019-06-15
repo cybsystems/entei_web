@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 const Videos = props => {
     const { videos } = props;
-    const [showVideo, setShowVideo] = useState(false)
+    const [showVideo, setShowVideo] = useState({ open: false, selectedVideo: null })
 
     useEffect(() => {
         if (!videos) {
@@ -74,16 +74,16 @@ const Videos = props => {
     };
 
     const onVideoShow = id => {
-        const video = videos.filter((video) => video.videos_id == id)
-        setShowVideo(true);
+        const video = videos.filter((video) => video.videos_id == id)[0]
+        setShowVideo(prevState => ({ selectedVideo: video, open: true }));
     }
-    const onDialogClose = () => setShowVideo(false)
+    const onDialogClose = () => setShowVideo((prevState) => ({ open: false }))
     return (
         <div>
             {videos ? (
                 <div>
 
-                    <VideoDialog open={showVideo}  onDialogClose={onDialogClose} />
+                    <VideoDialog video={showVideo.selectedVideo} open={showVideo.open} onDialogClose={onDialogClose} />
 
                     <div className="row">
                         <Grid container spacing={1}>
