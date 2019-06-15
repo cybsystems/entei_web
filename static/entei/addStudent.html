@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Add Student</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    
+</head>
+<body  onload="onLoad()">
+    <div class='container' style='margin-top:5%;margin-right:3%;'>
+        <div class='row' >
+            
+            <div class='col-lg-10'>  
+                
+                <div class='form-group'>
+                    <label for='sname'>Enter Student Name</label>
+                    <input id='sname' type='text' class='form-control'  placeholer='Enter Student Name'/>
+                </div>             
+                
+                <div class='form-group'>
+                    <label for='uname'>Enter Student User Name</label>
+                    <input id='uname' type='text' class='form-control'  placeholer='Enter Student UsernName'/>
+                </div>             
+                
+                <div class='form-group'>
+                    <label for='upass'>Enter Student Password</label>
+                    <input id='upass' type='password' class='form-control'  placeholer='Enter Student  Password'/>
+                </div>             
+                
+                
+                
+                <div class='form-group'>
+                    <div style='float:right;'>
+                        <button onclick='onSave()' class='btn btn-primary'>Save</button>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class='row' id='students'>
+            
+        </div>
+    </div>
+    
+    
+    
+    <script>
+        
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+        
+        
+        function onLoad()
+        {
+            let id=getUrlVars()["id"];
+            let sql='select * from invitations where id='+id ;
+            $.post('query.php',{sql:sql},function(res,err){
+                let invitations=JSON.parse(res).res;
+                if(invitations.length==0)
+                {
+                    alert('link got expired');
+                    window.close();
+                }            
+            });
+            
+            
+        }
+        
+        function _(id)
+        {
+            return document.getElementById(id);
+        }
+        
+        
+        function removeInvitation()
+        {
+            let id=getUrlVars()["id"];
+            
+            let sql='delete  from invitations where id='+id ;
+            
+            $.post('query.php',{sql:sql,op:'REMOVE'},function(res,err){
+                
+                
+                if(res.trim()=="Y")
+                {
+                    alert('Registered Successfully');
+                    window.close();
+                    
+                }
+                
+            });
+        }
+        
+        function onSave()
+        {
+            let sname=_('sname').value;
+            let uname=_('uname').value;
+            let upass=_('upass').value;
+            
+            $.post('addStudent.php',{sname:sname,uname:uname,upass:upass},function(res,err){
+                
+                if(res.trim()=='Y')
+                {
+                    _('sname').value='';
+                    _('uname').value='';
+                    _('upass').value='';
+                    removeInvitation();
+                    
+                }
+                else
+                alert('something went wrong');
+            });
+        }
+        
+    </script>
+    
+</body>
+</html>

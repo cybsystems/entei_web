@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Entei
+    </title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+    name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Files -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+<style>
+.login{
+    margin: 5% auto;
+}
+</style>
+</head>
+
+
+<body   style="background-color:#f4f3ef;">
+    
+        <div class="container">
+                <div class="row">
+                  <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
+                          <div class="card my-5 " style="padding:20px;">
+                                  <div class="card-header">
+                                      <center> <h5 class="card-title">Login</h5></center>
+                                      
+                                  </div>
+                                  <hr/>
+                                  <div class="card-body ">
+                                      <div class='row'>
+                                          <div class='col-lg-12'>
+                                              <div class='form-group'>
+                                                  <label for='email'>Enter Username</label>
+                                                  <input id='un' type='text' class='form-control'
+                                                  placeholer='Enter Username' />
+                                              </div>
+                                              
+                                               <div class='form-group'>
+                                                  <label for='email'>Enter Password</label>
+                                                  <input id='pass' type='password' class='form-control'
+                                                  placeholer='Enter Passowrd' />
+                                              </div>
+                                              
+                                               
+                                              
+                                          </div>
+                                          
+                                      </div>
+                                  </div>
+                                  <div class='card-body'>
+                                  <button  class='btn btn-primary form-control' onclick='onlogin()' style='background-color:#51cbce;color:white;'>Login</button>
+          
+                                  </div>
+                              </div>
+                  </div>
+                </div>
+              </div>
+  <script>
+   
+      function onlogin()
+      {
+          var un=$("#un").val();
+          var pass=$("#pass").val();
+          var sql="select * from admin where un='"+un+"' and pass='"+pass+"'";
+           $.post('http://bhoomi.pe.hu/entei/query.php',{sql:sql},function(res,err){
+                
+            var response=JSON.parse(res).res;
+                    
+                if(response.length>0)
+                {
+                    alert('Loggedin Successfully');
+                    window.location="dashboard.html?logedin=true";
+                    
+                }
+                else
+                {
+                    alert('Login Failed');
+                }
+                
+                
+            });
+             
+       }
+  </script>
+<!--   Core JS Files   -->
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/perfect-scrollbar.jquery.min.js"></script>
+<!--  Google Maps Plugin    -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<!-- Chart JS -->
+<script src="js/chartjs.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="js/bootstrap-notify.js"></script>
+<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+<!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+ 
+</body>
+
+</html>

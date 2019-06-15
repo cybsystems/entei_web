@@ -1,0 +1,22 @@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+<video width="400" controls controlsList="nodownload" id='video'>
+  
+ </video>
+ <script>
+ 
+ var video=getUrlVars()['video'];
+ var url="http://bhoomi.pe.hu/entei/"+video
+ $("#video").html('<source src="'+url+'" type="video/mp4"></source>' );   
+ 
+
+
+      function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+        
+ </script>
