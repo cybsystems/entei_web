@@ -1,7 +1,7 @@
-import StudentsModel from "../imports/models/StudentModel";
+import VideoModel from "../imports/models/VideoModel";
  
-export const getStudents = async () => {
-    let sql = `select * from users`;
+export const getVideos = async () => {
+    let sql = `select * from videos`;
     let data = new FormData();
     data.append("sql", sql);
     let res = await fetch("http://bhoomi.pe.hu/entei/query.php", {
@@ -10,15 +10,15 @@ export const getStudents = async () => {
     })
         .then(res => res.json())
         .then(res => res.res);
-    new StudentsModel(res).save();
+    new VideoModel(res).save();
 };
 
-export const removeStudent = async (id) => {
-    let sql = `delete  from users where users_id=${id}`;
+export const removeVideo = async (id) => {
+    let sql = `delete  from videos where videos_id=${id}`;
     let data = new FormData();
     data.append("sql", sql);
     data.append("op", "REMOVE");
-    data.append("get_sql", "select * from users");
+    data.append("get_sql", "select * from videos");
 
     let res = await fetch("http://bhoomi.pe.hu/entei/query.php", {
         method: "POST",
@@ -26,5 +26,5 @@ export const removeStudent = async (id) => {
     })
         .then(res => res.json())
         .then(res => res.res);
-    new StudentsModel(res).save();
+    new VideoModel(res).save();
 };
