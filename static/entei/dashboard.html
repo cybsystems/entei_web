@@ -367,9 +367,9 @@
         let isInvitationPresent = await isPresent("invitations", "email", email);
         if (isInvitationPresent) {
           alert("Invitation Already Sent");
-          return;
+        return;
         }
-
+        
         $.post("http://bhoomi.pe.hu/entei/sendInvitation.php", { email: email }, function(res, err) {
           console.log(res);
           onLoad();
