@@ -22,7 +22,7 @@ $insert_video="insert into videos (videos_title,videos_desc,videos_cat_id,videos
 if(mysqli_query($con,$insert_video))
     {
       $lastId=mysqli_insert_id($con);
-      $target_dir = "videos/";
+      $target_dir = "../videos/";
       $path=$_FILES["file"]["name"];
       $ext=pathinfo($path, PATHINFO_EXTENSION);
      

@@ -1,73 +1,25 @@
 import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
 import { getVideos, removeVideo } from "../../../services/videos";
-import Button from "@material-ui/core/Button";
 import VideoDialog from "../../components/VideoDialog";
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing(1),
-        textAlign: "center",
-        color: theme.palette.text.secondary,
-    },
-}));
+import VideoUploadForm from "../../components/VideoUploadForm";
+import VideoCard from "../../components/VideoCard";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const Videos = props => {
     const { videos } = props;
+
     const [showVideo, setShowVideo] = useState({ open: false, selectedVideo: null })
+    const [uploadPercentage, setUploadPercentage] = useState(0);
 
     useEffect(() => {
         if (!videos) {
             getVideos();
         }
     });
-    function VideoCard({ video }) {
-        const { videos_title, videos_desc, videos_id } = video;
 
-        return (
-            <React.Fragment>
 
-                <Card style={{ padding: 20 }}>
-                    <CardContent>
-                        <div>Name : {videos_title}</div>
-                        <br></br>
-                        <div>Discription : {videos_desc}</div>
-                    </CardContent>
-                    <div style={{ float: "right" }}>
-                        <CardActions>
-
-                            <Button
-                                onClick={() => {
-                                    onVideoShow(videos_id)
-                                }}
-                                size="small"
-                                variant="contained"
-                                color="primary">
-                                SHOW
-							</Button>
-                            <Button
-                                onClick={() => {
-                                    onVideoRemove(videos_id);
-                                }}
-                                size="small"
-                                variant="contained"
-                                color="secondary">
-                                REMOVE
-							</Button>
-                        </CardActions>
-                    </div>
-                </Card>
-            </React.Fragment>
-        );
-    }
 
     const onVideoRemove = id => {
         removeVideo(id)
@@ -77,9 +29,30 @@ const Videos = props => {
         const video = videos.filter((video) => video.videos_id == id)[0]
         setShowVideo(prevState => ({ selectedVideo: video, open: true }));
     }
+    const onUploadClicked = ({ files, title, desc, selectedCategory, selectedClass }) => {
+        let file = files[0];
+        let formData = new FormData();
+        formData.append("file", file);
+        formData.append("info", JSON.stringify({ vname: title, category: selectedCategory, class: selectedClass, desc: desc }));
+        let ajax = new XMLHttpRequest();
+        ajax.addEventListener("load", () => { getVideos() }, false);
+        ajax.upload.addEventListener("progress", (event) => {
+            let percent = (event.loaded / event.total) * 100;
+            setUploadPercentage(() => { return percent == 100 ? 0 : percent })
+        }
+            , false);
+        ajax.open("POST", "http://bhoomi.pe.hu/entei/upload.php");
+        ajax.send(formData);
+    }
+
     const onDialogClose = () => setShowVideo((prevState) => ({ open: false }))
     return (
         <div>
+            {uploadPercentage ?
+                <LinearProgress variant="determinate" value={uploadPercentage} /> : ''}
+
+            <VideoUploadForm onUploadClicked={onUploadClicked} />
+
             {videos ? (
                 <div>
 
@@ -89,8 +62,8 @@ const Videos = props => {
                         <Grid container spacing={1}>
                             {videos.map((video, i) => {
                                 return (
-                                    <div key={i} className="col-lg-3 col-sm-12 col-md-6 mt-5">
-                                        <VideoCard video={video} />
+                                    <div key={i} className="col-lg-6 col-sm-12 col-md-12 mt-5">
+                                        <VideoCard onVideoShow={onVideoShow} onVideoRemove={onVideoRemove} video={video} />
                                     </div>
                                 );
                             })}

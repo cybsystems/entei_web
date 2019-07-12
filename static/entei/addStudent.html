@@ -79,10 +79,10 @@
         let sql = "delete  from invitations where id=" + id;
 
         $.post("http://bhoomi.pe.hu/entei/query.php", { sql: sql, op: "REMOVE" }, function(res, err) {
-          if (res.trim() == "Y") {
+           
             alert("Registered Successfully");
             window.location.href = "https://www.google.com";
-          }
+          
         });
       }
 
@@ -91,13 +91,15 @@
         let uname = _("uname").value;
         let upass = _("upass").value;
         let ucpass = _("ucpass").value;
+        let invitationId = getUrlVars()["id"];
+
         let isStudentPresent = await isPresent("users", "users_uname", uname);
         if (isStudentPresent) {
           alert("Username Already Taken");
           return;
         }
         if (upass == ucpass) {
-          $.post("http://bhoomi.pe.hu/entei/addStudent.php", { sname: sname, uname: uname, upass: upass }, function(
+          $.post("http://bhoomi.pe.hu/entei/addStudent.php", { sname: sname, uname: uname, upass: upass,invitationId:invitationId }, function(
             res,
             err
           ) {

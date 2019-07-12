@@ -10,69 +10,75 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(2),
-    },
-    closeButton: {
-        position: "absolute",
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-    },
+  root: {
+    margin: 0,
+    padding: theme.spacing(2)
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
+  }
 });
 
 const DialogTitle = withStyles(styles)(props => {
-    const { children, classes, onClose } = props;
-    return (
-        <MuiDialogTitle disableTypography className={classes.root}>
-            <Typography variant="h6">{children}</Typography>
-            {onClose ? (
-                <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
-            ) : null}
-        </MuiDialogTitle>
-    );
+  const { children, classes, onClose } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton
+          aria-label="Close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
 });
 
 const DialogContent = withStyles(theme => ({
-    root: {
-        padding: theme.spacing(2),
-    },
+  root: {
+    padding: theme.spacing(2)
+  }
 }))(MuiDialogContent);
 
 const DialogActions = withStyles(theme => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(1),
-    },
+  root: {
+    margin: 0,
+    padding: theme.spacing(1)
+  }
 }))(MuiDialogActions);
 
 const VideoDialog = ({ video, open, onDialogClose }) => {
+  const url = video ? `http://bhoomi.pe.hu/entei/${video.videos_url}` : "";
 
-    const url = video ? `http://bhoomi.pe.hu/entei/${video.videos_url}` : ''
-
-    return (
-        <div>{video ?
-            <Dialog maxWidth='xl' onClose={onDialogClose} open={open} >
-                <DialogTitle    id="customized-dialog-title" onClose={onDialogClose}>
-                    {video.videos_title}
-                 </DialogTitle>
-                <DialogContent    dividers>
-                    <video width="800" controls>
-                        <source src={url} type="video/mp4" />
-
-                    </video>
-
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onDialogClose} color="secondary">
-                        Close
-                </Button>
-                </DialogActions>
-            </Dialog> : ''}
-        </div>)
-}
+  return (
+    <div>
+      {video ? (
+        <Dialog maxWidth="xl" onClose={onDialogClose} open={open}>
+          <DialogTitle id="customized-dialog-title" onClose={onDialogClose}>
+            {video.videos_title}
+          </DialogTitle>
+          <DialogContent dividers>
+            <video width="800" controls>
+              <source src={url} type="video/mp4" />
+            </video>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onDialogClose} color="secondary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : (
+        ""
+      )}
+    </div>
+  );
+};
 
 export default VideoDialog;
